@@ -3,19 +3,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Setteler/comboall.git'
+                git branch: 'main', url: 'https://github.com/Setteler/laughing-tribble.git'
             }
         }
         stage('Build') {
             steps {
                 script {
-                    dockerImage = docker.build("your-org/your-app:${env.BUILD_NUMBER}")
+                    dockerImage = docker.build("pegasusbi/com:${env.BUILD_NUMBER}")
                 }
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'docker run --rm your-org/your-app:${env.BUILD_NUMBER} ./run-tests.sh'
             }
         }
         stage('Push') {
