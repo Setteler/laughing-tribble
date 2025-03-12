@@ -14,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dockerImage = docker.build("pegasusbi/com:latest")
+                    dockerImage = docker.build("pegasusbi/com:latest", "--no-cache .")
                 }
             }
         }
