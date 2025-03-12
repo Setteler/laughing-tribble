@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: pegasusbi/com:12  # Replace with your Docker Hub image
+        image: pegasusbi/com:latest  # Replace with your Docker Hub image
         ports:
         - containerPort: 5000
