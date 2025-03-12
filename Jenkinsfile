@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Apply to Kuberenets') {
             steps {
-                sh 'kubectl apply -f dep.yaml'
+                sh 'kubectl rollout restart deployment flask-app'
             }
         }
     }
