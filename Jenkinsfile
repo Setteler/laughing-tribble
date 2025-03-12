@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    environment {
+        MINIKUBE_IP = "192.168.49.2" // Change if needed
+        LOCAL_PORT = "5002"          // Local port to forward to
+        REMOTE_PORT = "5000"         // Flask app's port
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -9,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dockerImage = docker.build("pegasusbi/com:latest")
+                    dockerImage = docker.build("pegasusbi/com:${env.BUILD_NUMBER}")
                 }
             }
         }
@@ -22,9 +27,16 @@ pipeline {
                 }
             }
         }
-        stage('Apply to Kuberenets') {
+        stage('Apply to Kubernetes') {
             steps {
                 sh 'kubectl rollout restart deployment flask-app'
+            }
+        }
+        stage('Port Forwarding') {
+            steps {
+                script {
+                    sh "nohup kubectl port-forward svc/flask-service ${LOCAL_PORT}:${REMOTE_PORT} > /dev/null 2>&1 &"
+                }
             }
         }
     }
