@@ -16,5 +16,5 @@ spec:
         - name: flask-app
           image: pegasusbi/com:latest
           imagePullPolicy: Always
-      ports:
-        - containerPort: 5000
+          ports:
+            - containerPort: 5000
