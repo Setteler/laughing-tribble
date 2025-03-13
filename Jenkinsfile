@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'docker build --no-cache -t pegasusbi/com:1 .'
+                    sh 'docker build --no-cache -t pegasusbi/com:${BUILD_NUMBER} .'
                 }
             }
         }
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        sh 'docker push pegasusbi/com:1'
+                        sh 'docker push pegasusbi/com:${BUILD_NUMBER}'
                     }
                 }
             }
