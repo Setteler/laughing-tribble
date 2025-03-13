@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script{
                     sh '''
-                        kubectl apply -f deployment.yaml
+                        kubectl apply -f dep.yaml
                         kubectl rollout status deployment/flask-app
             '''
                 }
