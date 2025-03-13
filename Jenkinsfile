@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'docker build --no-cache -t pegasusbi/com:${BUILD_NUMBER} .'
+                    sh 'docker build --no-cache -t pegasusbi/com:latest .'
                 }
             }
         }
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        sh 'docker push pegasusbi/com:${BUILD_NUMBER}'
+                        sh 'docker push pegasusbi/com:latest'
                     }
                 }
             }
@@ -27,6 +27,7 @@ pipeline {
             steps {
                 script{
                     sh '''
+                        kubectl delete pod -l app=flask  # Delete old pods to force pulling
                         kubectl apply -f dep.yaml
                         kubectl rollout status deployment/flask-app
             '''

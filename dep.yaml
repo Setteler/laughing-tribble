@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: pegasusbi/com:37
+          image: pegasusbi/com:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
