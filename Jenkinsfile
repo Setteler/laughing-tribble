@@ -14,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dockerImage = docker.build("pegasusbi/com:latest", "--no-cache .")
+                    sh 'docker build --no-cache -t $DOCKER_IMAGE .'
                 }
             }
         }
@@ -22,20 +22,19 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        dockerImage.push()
+                        sh 'docker push $DOCKER_IMAGE'
                     }
                 }
             }
         }
+        
         stage('Apply to Kubernetes') {
             steps {
-                sh 'kubectl rollout restart deployment flask-app'
-            }
-        }
-        stage('Port Forwarding') {
-            steps {
-                script {
-                    sh "nohup kubectl port-forward svc/flask-service ${LOCAL_PORT}:${REMOTE_PORT} > /dev/null 2>&1 &"
+                script{
+                    sh '''
+                        kubectl apply -f deployment.yaml
+                        kubectl rollout status deployment/flask-app
+            '''
                 }
             }
         }
